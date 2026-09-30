@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Aura Smart Living</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="../css/index.css">
+</head>
+<body>
+
+<div id="app-container">
+
+  <button type="button" class="theme-toggle" id="theme-toggle-btn" aria-label="Toggle theme">
+    <span class="icon-dark">🌙</span>
+    <span class="icon-light">☀️</span>
+  </button>
+
+  <div id="toast-host" aria-live="polite"></div>
+
+  <div id="login-view">
+    <div class="login-brand">
+      <div class="login-glyph">🏘️</div>
+      <h1>Aura Smart Living</h1>
+      <p class="login-subtitle">Ultra-Luxury Penthouse Management</p>
+    </div>
+
+    <div class="login-role-cards" id="login-role-cards">
+      <button type="button" class="login-role-card active" data-role="owner">
+        <span class="login-role-icon">⌂</span>
+        <span class="login-role-text">
+          <span class="login-role-title">Owner</span>
+        </span>
+      </button>
+      <button type="button" class="login-role-card" data-role="manager">
+        <span class="login-role-icon">◈</span>
+        <span class="login-role-text">
+          <span class="login-role-title">Building Manager</span>
+        </span>
+      </button>
+      <button type="button" class="login-role-card" data-role="staff">
+        <span class="login-role-icon">▦</span>
+        <span class="login-role-text">
+          <span class="login-role-title">Staff Console</span>
+        </span>
+      </button>
+    </div>
+
+    <p class="subsection-title text-center mb-2">Security PIN</p>
+    <div class="pin-dots mb-3">
+      <span class="pin-dot" id="lpd0"></span>
+      <span class="pin-dot" id="lpd1"></span>
+      <span class="pin-dot" id="lpd2"></span>
+      <span class="pin-dot" id="lpd3"></span>
+    </div>
+    <div class="pin-grid mb-3" id="login-pin-grid">
+      <button type="button" class="pin-key" data-key="1">1</button>
+      <button type="button" class="pin-key" data-key="2">2</button>
+      <button type="button" class="pin-key" data-key="3">3</button>
+      <button type="button" class="pin-key" data-key="4">4</button>
+      <button type="button" class="pin-key" data-key="5">5</button>
+      <button type="button" class="pin-key" data-key="6">6</button>
+      <button type="button" class="pin-key" data-key="7">7</button>
+      <button type="button" class="pin-key" data-key="8">8</button>
+      <button type="button" class="pin-key" data-key="9">9</button>
+      <button type="button" class="pin-key" data-key="clear">Clear</button>
+      <button type="button" class="pin-key" data-key="0">0</button>
+      <button type="button" class="pin-key" data-key="back">⌫</button>
+    </div>
+
+    <p class="login-error" id="login-error">&nbsp;</p>
+    <button type="button" class="btn-aura" id="login-btn">Log in</button>
+    <p class="signup-prompt text-center mt-3">
+      Don't have an account? 
+      <button type="button" class="btn-outline-aura btn-sm-aura" data-bs-toggle="modal" data-bs-target="#signupModal">
+      Sign up
+      </button>
+    </p>
+  </div>
+
+  <div class="modal fade" id="signupModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content aura-modal p-3">
+        <p class="card-label mb-2">Create New Account</p>
+        <form id="signup-form">
+          <div class="mb-2">
+            <label class="subsection-title" for="signup-name">Full Name</label>
+            <input type="text" class="aura-input" id="signup-name" placeholder="e.g. Adrienne Vance" required>
+          </div>
+          <div class="mb-2">
+            <label class="subsection-title" for="signup-unit">Unit Number</label>
+            <input type="text" class="aura-input" id="signup-unit" placeholder="e.g. PH-12" required>
+          </div>
+          <div class="mb-3">
+            <label class="subsection-title" for="signup-pin">4-Digit PIN</label>
+            <input type="password" maxlength="4" class="aura-input" id="signup-pin" placeholder="••••" required>
+          </div>
+          <button type="submit" class="btn-aura w-100" id="signup-submit-btn">Register</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div id="owner-view" class="d-none">
+    <header class="aura-header">
+      <div>
+        <p class="eyebrow" id="owner-unit-badge">Unit PH-12</p>
+        <h1>Good evening, Adrienne</h1>
+      </div>
+      <div class="header-actions">
+        <span class="status-badge"><span class="dot"></span>Online</span>
+        <button type="button" class="btn-logout" aria-label="Log out">⎋</button>
+      </div>
+    </header>
+
+    <div class="aura-card" id="aura-ai-card">
+      <div class="aura-glyph">🏘️</div>
+      <div class="aura-copy">
+        <p class="aura-label" id="aura-label">Aura noticed</p>
+        <p class="aura-text" id="aura-dynamic-text">Sunset is in 22 minutes. Shall I warm the living room and lower the west shades?</p>
+      </div>
+      <button type="button" class="btn-aura-action" id="aura-action-btn">Do it</button>
+    </div>
+
+    <div class="owner-grid">
+      <div class="tab-panel" id="residence-tab">
+        <h2 class="section-title">Your residence</h2>
+        <div class="scene-row" id="scene-row">
+          <button type="button" class="scene-chip active" data-scene="Home">Home</button>
+          <button type="button" class="scene-chip" data-scene="Away">Away</button>
+          <button type="button" class="scene-chip" data-scene="Evening">Evening</button>
+          <button type="button" class="scene-chip" data-scene="Rest">Rest</button>
+        </div>
+        <div class="residence-cards">
+          <div class="glass-card mb-2">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <span class="card-label">Thermostat</span>
+              <span class="card-value" id="temp-readout">72°F</span>
+            </div>
+            <input type="range" class="aura-range" id="thermostat-slider" min="60" max="82" value="72" aria-label="Thermostat temperature">
+          </div>
+
+          <div class="glass-card mb-2">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <span class="card-label">Private Storage Unit B-4</span>
+              <span class="card-value-sm" id="storage-temp">14°F</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <span class="card-value-sm text-muted-aura">Humidity</span>
+              <span class="card-value-sm" id="storage-humidity">65%</span>
+            </div>
+            <div class="aura-progress">
+              <div class="progress-bar" id="storage-humidity-bar" style="width:65%"></div>
+            </div>
+          </div>
+
+          <div class="glass-card mb-2">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <span class="card-label">Private Parking Bay B-12</span>
+              <span class="status-pill">Monitored &amp; Secure</span>
+            </div>
+            <p class="card-value-sm mb-0">Range Rover Autobiography · Parked</p>
+          </div>
+
+          <div class="action-tile-row">
+            <button type="button" class="glass-card action-tile" data-bs-toggle="modal" data-bs-target="#pinModal">
+              <span class="card-label d-block">⌘ Smart Lock</span>
+            </button>
+            <button type="button" class="glass-card action-tile" data-bs-toggle="modal" data-bs-target="#intercomModal">
+              <span class="card-label d-block">◐ Intercom</span>
+            </button>
+          </div>
+        </div>
+        <button type="button" class="btn-outline-aura mt-2" id="valet-request-btn">Request valet</button>
+      </div>
+
+      <div class="tab-panel d-none" id="lifestyle-tab">
+        <h2 class="section-title">Lifestyle</h2>
+        <p class="subsection-title">Parcel Lockers</p>
+        <div id="lockers-container" class="mb-3 card-grid"></div>
+
+        <p class="subsection-title">On-demand services</p>
+        <div class="service-grid mb-3">
+          <button type="button" class="glass-card service-card" data-bs-toggle="modal" data-bs-target="#bookingModal" data-service="Cleaning">
+            <span class="service-icon">✺</span>
+            <span class="card-label">Cleaning</span>
+          </button>
+          <button type="button" class="glass-card service-card" data-bs-toggle="modal" data-bs-target="#bookingModal" data-service="Plumbing">
+            <span class="service-icon">⚙</span>
+            <span class="card-label">Plumbing</span>
+          </button>
+          <button type="button" class="glass-card service-card" data-bs-toggle="modal" data-bs-target="#bookingModal" data-service="Pressing">
+            <span class="service-icon">✂</span>
+            <span class="card-label">Pressing</span>
+          </button>
+          <button type="button" class="glass-card service-card" data-bs-toggle="modal" data-bs-target="#bookingModal" data-service="Handyman">
+            <span class="service-icon">◈</span>
+            <span class="card-label">Handyman</span>
+          </button>
+        </div>
+
+        <p class="subsection-title">Amenities</p>
+        <div class="glass-card d-flex justify-content-between align-items-center mb-2">
+          <div><p class="card-label mb-0">Spa &amp; Wellness</p><p class="card-value-sm mb-0">Next opening 9:00 AM</p></div>
+          <button type="button" class="btn-outline-aura btn-sm-aura" data-bs-toggle="modal" data-bs-target="#bookingModal" data-service="Spa &amp; Wellness">Book</button>
+        </div>
+        <div class="glass-card d-flex justify-content-between align-items-center mb-2">
+          <div><p class="card-label mb-0">Private Dining Room</p><p class="card-value-sm mb-0">Next opening 6:30 PM</p></div>
+          <button type="button" class="btn-outline-aura btn-sm-aura" data-bs-toggle="modal" data-bs-target="#bookingModal" data-service="Private Dining Room">Book</button>
+        </div>
+        <div class="glass-card d-flex justify-content-between align-items-center mb-2">
+          <div><p class="card-label mb-0">Fitness Studio</p><p class="card-value-sm mb-0">Open now · 3 present</p></div>
+          <button type="button" class="btn-outline-aura btn-sm-aura" data-bs-toggle="modal" data-bs-target="#bookingModal" data-service="Fitness Studio">Book</button>
+        </div>
+        <div class="glass-card d-flex justify-content-between align-items-center mb-2">
+          <div><p class="card-label mb-0">Rooftop Infinity Pool</p><p class="card-value-sm mb-0">Closes 10:00 PM · Heated 82°F</p></div>
+          <button type="button" class="btn-outline-aura btn-sm-aura" data-bs-toggle="modal" data-bs-target="#bookingModal" data-service="Rooftop Infinity Pool">Book</button>
+        </div>
+      </div>
+
+      <div class="tab-panel d-none" id="passes-tab">
+        <h2 class="section-title">Passes &amp; access</h2>
+        <div class="glass-card text-center mb-3">
+          <p class="card-label mb-2">Active Guest Pass</p>
+          <div class="qr-wrap" id="qr-wrap" aria-label="Guest pass QR code"></div>
+          <p class="card-value-sm mt-2 mb-3" id="qr-code-text">QR-AURA-8892</p>
+          <button type="button" class="btn-outline-aura btn-sm-aura" id="qr-generate-btn">Generate new pass</button>
+        </div>
+
+        <div class="glass-card mb-3">
+          <p class="subsection-title mb-2">Contractor schedule</p>
+          <div class="d-flex justify-content-between align-items-start">
+            <div>
+              <p class="card-label mb-1">Kitchen renovation — Merrow &amp; Co.</p>
+              <p class="card-value-sm mb-0">Mon–Fri · 8:00 AM – 4:00 PM</p>
+            </div>
+            <span class="status-pill">On-site</span>
+          </div>
+        </div>
+
+        <button type="button" class="btn-sos" id="sos-btn">
+          <span class="btn-sos-icon">⚠</span>
+          <span id="sos-label">Emergency SOS</span>
+        </button>
+        <p class="broadcast-confirm" id="sos-confirm">&nbsp;</p>
+      </div>
+
+      <div class="tab-panel d-none" id="finance-tab">
+        <h2 class="section-title">Finance</h2>
+        <div id="finance-cards-container" class="mb-3 card-grid"></div>
+
+        <p class="subsection-title">Building governance</p>
+        <div class="card-grid mb-3">
+          <div class="glass-card">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <span class="card-label">Capital Reserve Fund</span>
+              <span class="card-value-sm" id="reserve-fund-pct">72% funded</span>
+            </div>
+            <div class="aura-progress"><div class="progress-bar" id="reserve-fund-bar" style="width:72%"></div></div>
+          </div>
+
+          <div class="glass-card">
+            <p class="card-label mb-1">Roof Replacement Vote</p>
+            <p class="card-value-sm text-muted-aura mb-2" id="vote-status-text">Open for owner vote</p>
+            <button type="button" class="btn-outline-aura btn-sm-aura" id="open-vote-btn" data-bs-toggle="modal" data-bs-target="#voteModal">Review &amp; vote</button>
+          </div>
+        </div>
+
+        <button type="button" class="btn-outline-aura w-100" id="policies-btn">Building Policies</button>
+      </div>
+    </div>
+
+    <nav class="aura-bottom-nav">
+      <button type="button" class="nav-item active" data-tab="residence-tab">
+        <span class="nav-icon">⌂</span>
+        <span class="nav-label">Residence</span>
+      </button>
+      <button type="button" class="nav-item" data-tab="lifestyle-tab">
+        <span class="nav-icon">✺</span>
+        <span class="nav-label">Lifestyle</span>
+      </button>
+      <button type="button" class="nav-item" data-tab="passes-tab">
+        <span class="nav-icon">▦</span>
+        <span class="nav-label">Passes</span>
+      </button>
+      <button type="button" class="nav-item" data-tab="finance-tab">
+        <span class="nav-icon">◈</span>
+        <span class="nav-label">Finance</span>
+      </button>
+    </nav>
+  </div>
+
+  <div id="manager-view" class="d-none">
+    <header class="aura-header">
+      <div>
+        <p class="eyebrow">Building Management</p>
+        <h1>Manager desk</h1>
+      </div>
+      <div class="header-actions">
+        <span class="status-badge"><span class="dot"></span>Online</span>
+        <button type="button" class="btn-logout" aria-label="Log out">⎋</button>
+      </div>
+    </header>
+
+    <div class="manager-layout">
+      <div class="manager-main">
+        <div class="row g-2 mb-3" id="manager-metrics"></div>
+
+        <h2 class="section-title">Priority actions</h2>
+        <div id="manager-permits-container" class="mb-3 card-grid"></div>
+
+        <h2 class="section-title">Dispatch tickets</h2>
+        <div id="manager-tickets-container" class="mb-3 card-grid"></div>
+      </div>
+
+      <div class="manager-side">
+        <h2 class="section-title">Broadcast to residents</h2>
+        <form id="broadcast-form" class="glass-card">
+          <div class="mb-2">
+            <label class="subsection-title" for="broadcast-message">Message</label>
+            <textarea class="aura-input" id="broadcast-message" rows="3" placeholder="e.g. Water shutoff on Floor 12, 10–11 AM tomorrow" required></textarea>
+          </div>
+          <div class="mb-3">
+            <label class="subsection-title" for="broadcast-audience">Audience</label>
+            <select class="aura-input" id="broadcast-audience">
+              <option value="all">All residents</option>
+              <option value="owners">Owners only</option>
+              <option value="floor">Selected floor</option>
+            </select>
+          </div>
+          <button type="submit" class="btn-aura">Send broadcast</button>
+          <p class="broadcast-confirm" id="broadcast-confirm">&nbsp;</p>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div id="staff-view" class="d-none">
+    <header class="aura-header">
+      <div>
+        <p class="eyebrow">Front Desk</p>
+        <h1>Staff console</h1>
+      </div>
+      <div class="header-actions">
+        <span class="status-badge"><span class="dot"></span>On shift</span>
+        <button type="button" class="btn-logout" aria-label="Log out">⎋</button>
+      </div>
+    </header>
+
+    <div class="staff-layout">
+      <div class="staff-col">
+        <div class="glass-card text-center mb-3">
+          <p class="card-label mb-2">Gate Scanner</p>
+          <div class="scanner-frame" id="scanner-frame">
+            <div class="scanner-line" id="scanner-line"></div>
+            <div class="scanner-corner tl"></div>
+            <div class="scanner-corner tr"></div>
+            <div class="scanner-corner bl"></div>
+            <div class="scanner-corner br"></div>
+          </div>
+          <button type="button" class="btn-aura mt-3" id="gate-scan-btn">Scan QR pass</button>
+          <p class="scan-result" id="scan-result">&nbsp;</p>
+        </div>
+
+        <h2 class="section-title">Log a parcel</h2>
+        <form id="parcel-form" class="glass-card mb-3">
+          <div class="mb-2">
+            <label class="subsection-title" for="parcel-unit">Unit Number</label>
+            <input class="aura-input" id="parcel-unit" placeholder="e.g. PH-12" required>
+          </div>
+          <div class="mb-2">
+            <label class="subsection-title" for="parcel-locker">Locker</label>
+            <input class="aura-input" id="parcel-locker" placeholder="e.g. C-09" required>
+          </div>
+          <div class="mb-2">
+            <label class="subsection-title" for="parcel-carrier">Carrier</label>
+            <input class="aura-input" id="parcel-carrier" placeholder="e.g. UPS" required>
+          </div>
+          <button type="submit" class="btn-outline-aura">Log parcel</button>
+          <p class="broadcast-confirm" id="parcel-confirm">&nbsp;</p>
+        </form>
+
+        <h2 class="section-title">Incident report</h2>
+        <form id="incident-form" class="glass-card">
+          <div class="mb-2">
+            <label class="subsection-title" for="incident-type">Incident Type</label>
+            <select class="aura-input mb-2" id="incident-type">
+              <option>Safety</option>
+              <option>Property damage</option>
+              <option>Noise violation</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="mb-2">
+            <label class="subsection-title" for="incident-detail">Details</label>
+            <textarea class="aura-input" id="incident-detail" rows="3" placeholder="Describe what happened" required></textarea>
+          </div>
+          <button type="submit" class="btn-outline-aura">File report</button>
+          <p class="broadcast-confirm" id="incident-confirm">&nbsp;</p>
+        </form>
+      </div>
+
+      <div class="staff-col">
+        <h2 class="section-title">Assigned tasks</h2>
+        <div id="staff-tasks-container" class="mb-3 card-grid"></div>
+
+        <h2 class="section-title">Valet queue</h2>
+        <div class="glass-card mb-3" id="staff-valet-container"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="modal fade" id="pinModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content aura-modal p-3 text-center" id="pin-modal-content">
+      <p class="card-label mb-1">Front Door Smart Lock</p>
+      <p class="card-value-sm text-muted-aura mb-3">Enter PIN to unlock</p>
+      <div class="pin-dots mb-3">
+        <span class="pin-dot" id="pd0"></span>
+        <span class="pin-dot" id="pd1"></span>
+        <span class="pin-dot" id="pd2"></span>
+        <span class="pin-dot" id="pd3"></span>
+      </div>
+      <div class="pin-grid mb-3" id="pin-grid">
+        <button type="button" class="pin-key" data-key="1">1</button>
+        <button type="button" class="pin-key" data-key="2">2</button>
+        <button type="button" class="pin-key" data-key="3">3</button>
+        <button type="button" class="pin-key" data-key="4">4</button>
+        <button type="button" class="pin-key" data-key="5">5</button>
+        <button type="button" class="pin-key" data-key="6">6</button>
+        <button type="button" class="pin-key" data-key="7">7</button>
+        <button type="button" class="pin-key" data-key="8">8</button>
+        <button type="button" class="pin-key" data-key="9">9</button>
+        <button type="button" class="pin-key" data-key="clear">Clear</button>
+        <button type="button" class="pin-key" data-key="0">0</button>
+        <button type="button" class="pin-key" data-key="back">⌫</button>
+      </div>
+      <p class="pin-status" id="pin-status">&nbsp;</p>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="intercomModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content aura-modal p-3 text-center">
+      <p class="card-label mb-2">Lobby Intercom</p>
+      <div class="video-mock mb-3">
+        <span class="live-badge"><span class="live-dot"></span>Live</span>
+        <div class="video-figure"></div>
+      </div>
+      <div class="d-flex gap-2 mb-2">
+        <button type="button" class="btn-outline-aura btn-sm-aura flex-fill" id="audio-toggle" data-muted="false">Mute audio</button>
+        <button type="button" class="btn-outline-aura btn-sm-aura flex-fill" data-bs-dismiss="modal">Close</button>
+      </div>
+      <button type="button" class="btn-aura" id="open-door-btn">Open door</button>
+      <p class="pin-status" id="door-status">&nbsp;</p>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="bookingModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content aura-modal p-3">
+      <p class="card-label mb-2">Book <span id="booking-service-name">a service</span></p>
+      <div class="mb-2">
+        <label class="subsection-title" for="booking-time">Time</label>
+        <select class="aura-input" id="booking-time">
+          <option>9:00 AM</option>
+          <option>11:00 AM</option>
+          <option>2:00 PM</option>
+          <option>6:30 PM</option>
+        </select>
+      </div>
+      <button type="button" class="btn-aura" id="booking-confirm-btn" data-bs-dismiss="modal">Confirm booking</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="voteModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content aura-modal p-3">
+      <p class="card-label mb-2">HOA Vote: Roof Replacement</p>
+      <p class="aura-text text-muted-aura mb-3">Allocation of $42,000 from capital reserve fund for terrace insulation and tile replacement.</p>
+      <div class="d-flex gap-2">
+        <button type="button" class="btn-aura flex-fill" id="vote-yes-btn">In Favor (Approve)</button>
+        <button type="button" class="btn-outline-aura flex-fill" id="vote-no-btn">Oppose (Reject)</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+<script src="../js/index.js"></script>
+</body>
+</html>
